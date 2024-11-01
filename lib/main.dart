@@ -11,7 +11,7 @@ class FinanceTrackerApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home:  DashboardScreen(),
+      home:  const DashboardScreen(),
     );
   }
 }

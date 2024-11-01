@@ -7,8 +7,8 @@ class Transaction {
   final String name;
   final String description;
   final double price;
-  final String type; // "profit" or "expense"
-  final DateTime date; // New property for transaction date
+  final String type;
+  final DateTime date;
 
   Transaction({
     required this.id,
@@ -16,7 +16,7 @@ class Transaction {
     required this.description,
     required this.price,
     required this.type,
-    required this.date, // Include the date in the constructor
+    required this.date,
   });
 }
 
@@ -102,7 +102,6 @@ class GlobalContent {
       type: 'expense',
       date: DateTime(2022, 2, 15), // Example date
     ),
-    // Adding entries for September 2024
     Transaction(
       id: 11,
       name: 'Rent',
@@ -127,7 +126,6 @@ class GlobalContent {
       type: 'expense',
       date: DateTime(2024, 9, 15),
     ),
-    // Adding entries for October 2024
     Transaction(
       id: 14,
       name: 'Salary',
