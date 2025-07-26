@@ -1,12 +1,37 @@
 import 'package:finance_recorder/screens/TransactionDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../Transaction.dart';
+import '../models/Transaction.dart';
 
-class TransactionListPage extends StatelessWidget {
+class TransactionListPage extends StatefulWidget {
   final List<Transaction> transactions;
 
   const TransactionListPage({super.key, required this.transactions});
+
+  @override
+  State<TransactionListPage> createState() => _TransactionListPageState();
+}
+
+class _TransactionListPageState extends State<TransactionListPage> {
+  late List<Transaction> _transactions;
+
+  @override
+  void initState() {
+    super.initState();
+    _transactions = List.from(widget.transactions); // Initialize the transactions list
+  }
+
+  void _updateTransactions() {
+    setState(() {
+      _transactions = List.from(widget.transactions); // Refresh the transactions list
+    });
+  }
+
+  void _removeTransaction(int id) {
+    setState(() {
+      _transactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +47,9 @@ class TransactionListPage extends StatelessWidget {
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: transactions.length,
+                  itemCount: _transactions.length,
                   itemBuilder: (context, index) {
-                    Transaction transaction = transactions[index];
+                    Transaction transaction = _transactions[index];
                     return ListTile(
                       leading: CircleAvatar(
                         backgroundColor: transaction.type == 'profit' ? Colors.green : Colors.red,
@@ -49,7 +74,15 @@ class TransactionListPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TransactionDetailScreen(transactionId: transaction.id),
+                            builder: (context) => TransactionDetailScreen(
+                              transactionId: transaction.id,
+                              onTransactionUpdated: () {
+                                _updateTransactions(); // Update the list on return
+                              },
+                              onTransactionDeleted: () {
+                                _removeTransaction(transaction.id); // Remove transaction if deleted
+                              },
+                            ),
                           ),
                         );
                       },
@@ -64,3 +97,4 @@ class TransactionListPage extends StatelessWidget {
     );
   }
 }
+
